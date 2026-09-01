@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+/* A quiet, unbranded palette. Warm off-white paper, deep ink, one accent.
+   Change --color-accent and the whole hub follows. */
+@theme {
+  --color-paper: #faf9f7;
+  --color-surface: #ffffff;
+  --color-ink: #1c1a17;
+  --color-muted: #6c6760;
+  --color-line: #e6e2dc;
+  --color-accent: #1f4d46;
+  --color-accent-soft: #e8f0ee;
+
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+}
+
+html {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+}
+
+body {
+  font-family: var(--font-sans);
+}
+
+/* Long free-text answers keep their line breaks without needing a markdown parser. */
+.prose-plain {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
