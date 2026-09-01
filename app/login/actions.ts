@@ -37,6 +37,21 @@ export async function sendMagicLink(
   // A non-participant address gets the same answer as a participant one, so the
   // form cannot be used to find out who is in the programme.
   if (error && !/signups not allowed|not found/i.test(error.message)) {
+    // Supabase unreachable or misconfigured: say something a participant can act on.
+    if (/fetch failed|network|ENOTFOUND|ECONNREFUSED/i.test(error.message)) {
+      return {
+        status: "error",
+        message:
+          "The hub cannot reach its login service right now. Try again in a minute, or email info@ecommercepark.se.",
+      };
+    }
+    if (/rate limit|too many/i.test(error.message)) {
+      return {
+        status: "error",
+        message:
+          "Too many sign-in emails have been sent. Wait a few minutes and try again.",
+      };
+    }
     return { status: "error", message: error.message };
   }
 
