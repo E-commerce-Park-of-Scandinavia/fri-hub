@@ -117,7 +117,10 @@ create policy participants_admin_write on participants for all to authenticated
 create or replace function public.guard_participant_self_update()
 returns trigger language plpgsql security definer set search_path = public as $fn$
 begin
-  if public.is_admin() then
+  -- No auth.uid() means a system context: the auth-link trigger or the
+  -- service-role client. Those must pass through. Anonymous visitors never
+  -- reach an UPDATE because every participants policy needs a real auth.uid().
+  if auth.uid() is null or public.is_admin() then
     return new;
   end if;
   -- Non-admins may not change who they are, where they belong, or what they may do.
