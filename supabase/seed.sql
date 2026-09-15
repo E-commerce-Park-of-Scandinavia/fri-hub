@@ -102,8 +102,8 @@ begin
       (v_row->>'d')::date,
       (v_row->>'t')::session_type,
       v_row->>'title',
-      '08:15',
-      case when v_row->>'t' = 'lecture_workshop' then '15:30' else '16:00' end,
+      '08:15'::time,
+      (case when v_row->>'t' = 'lecture_workshop' then '15:30' else '16:00' end)::time,
       v_loc,
       'confirmed',
       v_agenda
@@ -127,10 +127,13 @@ begin
     jsonb_build_object('key','rating',    'label','Rate the day from 1 to 5',              'type','number')
   ));
 
-  -- First admin. Replace this address with Sylvia's real @ecommercepark.se address
-  -- before inviting anyone — without an admin row, nobody can reach /admin.
+  -- First admins. Sylvia's own address for day-to-day use, plus the shared
+  -- info@ mailbox as a handover safety net so the hub survives staff changes.
+  -- Colleagues should be added as admins under their own addresses, not via info@.
   insert into participants (full_name, email, role, status, home_cohort_id)
-  values ('Sylvia Heuvelman', 'sylvia@ecommercepark.se', 'admin', 'active', v_autumn);
+  values
+    ('Sylvia Heuvelman',                'sylvia@ecommercepark.se', 'admin', 'active', v_autumn),
+    ('E-commerce Park (shared admin)',  'info@ecommercepark.se',   'admin', 'active', v_autumn);
 
 end;
 $seed$;
