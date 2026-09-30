@@ -115,8 +115,9 @@ export async function sendInvite(
 
   try {
     const admin = createAdminClient();
+    // Always carries ?next= so the email template can append &token_hash=…
     const { error } = await admin.auth.admin.inviteUserByEmail(email, {
-      redirectTo: `${site}/auth/confirm`,
+      redirectTo: `${site}/auth/confirm?next=%2F`,
     });
     if (error) {
       // Already has a login: a plain magic link is the right thing to send.
