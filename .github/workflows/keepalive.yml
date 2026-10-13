@@ -1,24 +1,30 @@
 name: Keep Supabase awake
 
-# Supabase pauses a free project after 7 days without database activity, which
-# takes the hub offline until someone restores it by hand. This makes a tiny
-# query three times a week so the project never goes idle that long.
+# Supabase pauses a free project after 7 days, which takes the hub offline until
+# someone restores it by hand.
 #
-# It doubles as a monitor: if the database is unreachable, this job goes red and
+# Attempt 1 (read-only pings, Mon/Wed/Fri) did NOT work: the project paused
+# exactly 7 days after being restored, despite successful pings on days 2, 5
+# and 7. Attempt 2 — this one — performs a real WRITE every day, on the theory
+# that Supabase counts database writes as activity where it ignored reads.
+#
+# This is unproven. If the project pauses again roughly a week after a restore,
+# the answer is the Pro plan, not another workaround.
+#
+# It doubles as a monitor: if the database is unreachable, this goes red and
 # GitHub emails the repository owner.
 
 on:
   schedule:
-    # 06:00 UTC on Monday, Wednesday and Friday — never more than a 3-day gap.
-    - cron: "0 6 * * 1,3,5"
-  # Lets you run it by hand from the Actions tab.
+    # Every day at 06:00 UTC — as much activity signal as we can cheaply give it.
+    - cron: "0 6 * * *"
   workflow_dispatch:
 
 jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
-      - name: Query the database
+      - name: Write a heartbeat
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
@@ -30,21 +36,32 @@ jobs:
             exit 1
           fi
 
-          # Row Level Security means this returns an empty list to an anonymous
-          # caller — which is fine. What matters is that it reaches the database.
+          now=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+
           status=$(curl -sS -m 30 -o /tmp/body -w '%{http_code}' \
+            -X PATCH \
             -H "apikey: ${SUPABASE_ANON_KEY}" \
             -H "Authorization: Bearer ${SUPABASE_ANON_KEY}" \
-            "${SUPABASE_URL}/rest/v1/programs?select=id&limit=1") || {
-              echo "::error::Could not reach ${SUPABASE_URL} at all. The project may be paused or deleted."
+            -H "Content-Type: application/json" \
+            -H "Prefer: return=representation" \
+            -d "{\"pinged_at\":\"${now}\"}" \
+            "${SUPABASE_URL}/rest/v1/heartbeat?id=eq.1") || {
+              echo "::error::Could not reach ${SUPABASE_URL}. The project is probably paused — restore it from the Supabase dashboard."
               exit 1
             }
 
           echo "HTTP ${status}"
+          cat /tmp/body
+
           if [ "${status}" != "200" ]; then
-            echo "::error::Expected HTTP 200, got ${status}. Response:"
-            cat /tmp/body
+            echo "::error::Heartbeat write failed with HTTP ${status}. Has migration 0006_heartbeat.sql been run?"
             exit 1
           fi
 
-          echo "Database reachable — project stays awake."
+          # A successful PATCH that matched no rows returns 200 with an empty list.
+          if ! grep -q 'pinged_at' /tmp/body; then
+            echo "::error::Nothing was written — the heartbeat row is missing. Run supabase/migrations/0006_heartbeat.sql."
+            exit 1
+          fi
+
+          echo "Heartbeat written. If the project still pauses ~7 days after a restore, writes do not count either."
