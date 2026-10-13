@@ -6,15 +6,26 @@ import { formatSessionDate, formatTimeRange } from "@/lib/format";
 import { KNOWLEDGE_CATEGORY_LABELS, SESSION_TYPE_LABELS } from "@/lib/types";
 
 /**
- * Only ever frame a Google Slides "publish to web" URL. Anything else is shown
- * as a plain link — an arbitrary URL in an iframe is not worth the risk.
+ * Only ever frame Google's own viewers — a Slides "publish to web" URL, or a
+ * Drive file preview. Anything else is shown as a plain link; an arbitrary URL
+ * in an iframe is not worth the risk.
+ *
+ * Drive share links end in /view, which refuses to be framed. /preview is the
+ * same document in Google's embeddable viewer, so rewrite it.
  */
 function slidesEmbedUrl(raw: string | null) {
   if (!raw) return null;
   try {
     const url = new URL(raw);
-    if (url.hostname !== "docs.google.com") return null;
-    return url.toString();
+
+    if (url.hostname === "docs.google.com") return url.toString();
+
+    if (url.hostname === "drive.google.com") {
+      const fileId = url.pathname.match(/^\/file\/d\/([^/]+)/)?.[1];
+      return fileId ? `https://drive.google.com/file/d/${fileId}/preview` : null;
+    }
+
+    return null;
   } catch {
     return null;
   }
