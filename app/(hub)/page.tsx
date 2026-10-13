@@ -44,7 +44,7 @@ export default async function HomePage() {
       />
 
       {showCheckinPrompt ? (
-        <Card className="border-accent/30 bg-accent-soft mb-8">
+        <Card className="border-highlight/40 bg-highlight-soft mb-8 border-l-4">
           <SectionTitle>Focus Circle is open</SectionTitle>
           <p className="text-sm">
             Your check-in for{" "}

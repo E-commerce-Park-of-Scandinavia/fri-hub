@@ -16,11 +16,16 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
   return (
     <main className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center px-6 py-16">
       <div className="mb-8">
-        <p className="text-accent text-xs font-semibold tracking-widest uppercase">
-          E-commerce Park of Scandinavia
-        </p>
-        <h1 className="mt-2 text-3xl font-semibold tracking-tight">FRI Hub</h1>
-        <p className="text-muted mt-2 text-sm">
+        {/* eslint-disable-next-line @next/next/no-img-element -- fixed-size brand mark */}
+        <img
+          src="/brand/logo-color.png"
+          alt="E-commerce Park of Scandinavia"
+          width={240}
+          height={60}
+          className="mb-6 h-12 w-auto"
+        />
+        <h1 className="text-4xl">FRI Hub</h1>
+        <p className="text-muted mt-2 text-base">
           What&apos;s next, who&apos;s in your group, and where the material lives.
         </p>
       </div>

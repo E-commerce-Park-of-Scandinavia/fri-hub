@@ -62,24 +62,26 @@ export function Badge({
 }) {
   const tones = {
     neutral: "bg-paper text-muted border-line",
-    accent: "bg-accent-soft text-accent border-accent/20",
+    accent: "bg-accent-soft text-accent border-accent/25",
   };
   return (
     <span
-      className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${tones[tone]}`}
+      className={`inline-flex items-center border px-2.5 py-0.5 text-xs font-semibold ${tones[tone]}`}
     >
       {children}
     </span>
   );
 }
 
+/* Matches the site's call-to-action: square, generous padding, semibold,
+   slightly open letter-spacing. */
 const buttonBase =
-  "inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-60";
+  "inline-flex items-center justify-center px-8 py-[15px] text-base font-semibold tracking-[0.16px] transition-colors disabled:cursor-not-allowed disabled:opacity-60";
 
 const buttonTones = {
-  primary: "bg-accent text-white hover:bg-accent/90",
-  secondary: "border-line bg-surface text-ink border hover:bg-paper",
-  danger: "border border-red-200 bg-white text-red-700 hover:bg-red-50",
+  primary: "bg-ink text-white hover:bg-accent",
+  secondary: "border-ink bg-surface text-ink border hover:bg-ink hover:text-white",
+  danger: "border border-red-300 bg-white text-red-700 hover:bg-red-700 hover:text-white",
 };
 
 export type ButtonTone = keyof typeof buttonTones;

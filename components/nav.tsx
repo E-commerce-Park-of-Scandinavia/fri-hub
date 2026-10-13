@@ -20,10 +20,10 @@ export function NavLinks({ items }: { items: NavItem[] }) {
             key={item.href}
             href={item.href}
             aria-current={active ? "page" : undefined}
-            className={`rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
+            className={`border-b-2 px-3 py-1.5 text-sm font-semibold transition-colors ${
               active
-                ? "bg-accent-soft text-accent"
-                : "text-muted hover:text-ink hover:bg-paper"
+                ? "border-accent text-accent"
+                : "hover:text-ink border-transparent text-muted hover:border-line"
             }`}
           >
             {item.label}

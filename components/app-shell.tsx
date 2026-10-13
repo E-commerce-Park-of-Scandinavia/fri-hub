@@ -20,10 +20,20 @@ export function AppShell({
     <>
       <header className="border-line bg-surface border-b">
         <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-6 gap-y-3 px-6 py-4">
-          <Link href="/" className="shrink-0">
-            <span className="text-lg font-semibold tracking-tight">FRI Hub</span>
+          <Link href="/" className="flex shrink-0 items-center gap-3">
+            {/* eslint-disable-next-line @next/next/no-img-element -- fixed-size brand mark */}
+            <img
+              src="/brand/logo-color.png"
+              alt="E-commerce Park of Scandinavia"
+              width={160}
+              height={40}
+              className="h-9 w-auto"
+            />
+            <span className="border-line text-ink border-l pl-3 text-lg font-extrabold">
+              FRI Hub
+            </span>
             {eyebrow ? (
-              <span className="text-accent ml-2 text-xs font-semibold tracking-widest uppercase">
+              <span className="bg-accent-soft text-accent px-2 py-0.5 text-xs font-bold tracking-widest uppercase">
                 {eyebrow}
               </span>
             ) : null}

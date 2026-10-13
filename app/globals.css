@@ -1,19 +1,35 @@
 @import "tailwindcss";
 
-/* A quiet, unbranded palette. Warm off-white paper, deep ink, one accent.
-   Change --color-accent and the whole hub follows. */
+/* ---------------------------------------------------------------------------
+   Brand: E-commerce Park of Scandinavia (ecommercepark.eu)
+   Taken from the live site — purple #5A2D9C as the brand colour, orange
+   #F08040 used sparingly for emphasis, near-black #1A1A1A for text and primary
+   buttons, and square corners throughout. Change a token here and the whole
+   hub follows; nothing hard-codes a colour.
+   --------------------------------------------------------------------------- */
 @theme {
-  --color-paper: #faf9f7;
+  --color-paper: #fafafa;
   --color-surface: #ffffff;
-  --color-ink: #1c1a17;
-  --color-muted: #6c6760;
-  --color-line: #e6e2dc;
-  --color-accent: #1f4d46;
-  --color-accent-soft: #e8f0ee;
+  --color-ink: #1a1a1a;
+  --color-muted: #6b6b6b;
+  --color-line: #e4e4e4;
 
-  --font-sans:
-    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial,
-    sans-serif;
+  --color-accent: #5a2d9c;
+  --color-accent-soft: #f5eff8;
+  --color-highlight: #f08040;
+  --color-highlight-soft: #fdf1e9;
+
+  --font-sans: var(--font-jakarta), system-ui, -apple-system, sans-serif;
+
+  /* The brand has no rounded corners anywhere. Zeroing the scale keeps every
+     rounded-* utility already in the components honest, in one place. */
+  --radius-xs: 0px;
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
+  --radius-3xl: 0px;
 }
 
 html {
@@ -23,6 +39,21 @@ html {
 
 body {
   font-family: var(--font-sans);
+  font-weight: 400;
+  letter-spacing: -0.1px;
+}
+
+/* The site sets headings heavy and slightly tight. */
+h1,
+h2,
+h3 {
+  font-weight: 800;
+  letter-spacing: -0.4px;
+}
+
+/* rounded-full is the one utility the zeroed scale does not cover. */
+.rounded-full {
+  border-radius: 0 !important;
 }
 
 /* Long free-text answers keep their line breaks without needing a markdown parser. */
