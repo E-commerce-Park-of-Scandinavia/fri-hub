@@ -3,6 +3,7 @@ import { cache } from "react";
 import { createClient } from "@/lib/supabase/server";
 import { daysBetween, todayIso } from "@/lib/format";
 import type {
+  Benefit,
   Cohort,
   KnowledgeHubItem,
   Participant,
@@ -184,4 +185,23 @@ export async function getKnowledgeItemsForSession(
     .eq("session_id", sessionId)
     .order("title", { ascending: true });
   return (data as KnowledgeHubItem[] | null) ?? [];
+}
+
+/**
+ * Every benefit visible to this participant — partner offers and peer offers
+ * together. RLS hides unpublished ones and other cohorts' cohort-specific ones.
+ */
+export async function getBenefits(): Promise<Benefit[]> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("benefits")
+    .select("*")
+    .order("kind", { ascending: true })
+    .order("created_at", { ascending: false });
+  return (data as Benefit[] | null) ?? [];
+}
+
+/** Expired offers are kept, not deleted — but they stop being shown as live. */
+export function isExpired(benefit: Benefit) {
+  return benefit.valid_until !== null && benefit.valid_until < todayIso();
 }

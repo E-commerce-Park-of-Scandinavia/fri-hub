@@ -144,3 +144,22 @@ export type QuestionnaireResponse = {
   answers: Record<string, string>;
   submitted_at: string;
 };
+
+export type BenefitKind = "partner" | "peer";
+
+export type Benefit = {
+  id: string;
+  program_id: string;
+  cohort_id: string | null;
+  offered_by_participant_id: string | null;
+  kind: BenefitKind;
+  partner_name: string;
+  partner_url: string | null;
+  title: string;
+  description: string | null;
+  discount_code: string | null;
+  redeem_url: string | null;
+  valid_from: string | null;
+  valid_until: string | null;
+  is_published: boolean;
+};

@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
+import AvatarUpload from "./avatar-upload";
 import { saveProfile, type ProfileState } from "./actions";
 import {
   Button,
@@ -51,6 +52,9 @@ export default function ProfileForm({ participant }: { participant: Participant 
     <form action={formAction} className="space-y-6">
       <Card>
         <SectionTitle>About you</SectionTitle>
+        <div className="border-line mb-6 border-b pb-6">
+          <AvatarUpload initialUrl={participant.photo_url} name="photo_url" />
+        </div>
         <div className="grid gap-4 sm:grid-cols-2">
           <Field label="Full name">
             <Input name="full_name" defaultValue={participant.full_name} required />
@@ -64,14 +68,6 @@ export default function ProfileForm({ participant }: { participant: Participant 
               type="url"
               placeholder="https://"
               defaultValue={participant.company_website ?? ""}
-            />
-          </Field>
-          <Field label="Photo URL" hint="A link to a photo of you. Optional.">
-            <Input
-              name="photo_url"
-              type="url"
-              placeholder="https://"
-              defaultValue={participant.photo_url ?? ""}
             />
           </Field>
           <Field label="Instagram">
