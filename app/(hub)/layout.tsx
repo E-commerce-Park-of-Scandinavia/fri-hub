@@ -8,6 +8,7 @@ const BASE_ITEMS: NavItem[] = [
   { href: "/directory", label: "Directory" },
   { href: "/knowledge-hub", label: "Knowledge Hub" },
   { href: "/focus-circle", label: "Focus Circle" },
+  { href: "/kpis", label: "My KPIs" },
   { href: "/benefits", label: "Benefits" },
   { href: "/community", label: "Community" },
   { href: "/profile", label: "My profile" },

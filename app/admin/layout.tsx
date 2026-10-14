@@ -10,6 +10,7 @@ const ADMIN_ITEMS: NavItem[] = [
   { href: "/admin/community", label: "Community" },
   { href: "/admin/cohorts", label: "Cohorts" },
   { href: "/admin/programs", label: "Programmes" },
+  { href: "/admin/kpis", label: "KPIs" },
   { href: "/admin/checkins", label: "Check-ins" },
   { href: "/", label: "← Participant view" },
 ];

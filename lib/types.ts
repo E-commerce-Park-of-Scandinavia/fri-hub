@@ -68,6 +68,7 @@ export type Participant = {
   full_name: string;
   email: string;
   phone: string | null;
+  kpi_currency: string | null;
   company_name: string | null;
   company_website: string | null;
   instagram_url: string | null;
