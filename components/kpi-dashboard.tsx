@@ -56,7 +56,7 @@ export function KpiDashboard({
             </p>
 
             <div className="mt-3">
-              <KpiChart metric={metric} points={points} currency={currency} />
+              <KpiChart metricKey={metric.key} points={points} currency={currency} />
             </div>
 
             <p className="text-muted mt-2 text-xs">{metric.help}</p>

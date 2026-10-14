@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useState } from "react";
-import { formatPeriod, type KpiMetric } from "@/lib/kpi";
+import { formatPeriod, KPI_METRICS, type KpiMetric } from "@/lib/kpi";
 
 export type ChartPoint = { period: string; value: number | null };
 
@@ -19,14 +19,17 @@ const PAD = { top: 14, right: 16, bottom: 22, left: 8 };
  * by one person.
  */
 export function KpiChart({
-  metric,
+  metricKey,
   points,
   currency,
 }: {
-  metric: KpiMetric;
+  // A key, not the metric object: KPI_METRICS carries a format function, and a
+  // function cannot be passed from a server component to a client one.
+  metricKey: KpiMetric["key"];
   points: ChartPoint[];
   currency: string;
 }) {
+  const metric = KPI_METRICS.find((m) => m.key === metricKey)!;
   const gradientId = useId();
   const [hover, setHover] = useState<number | null>(null);
 
@@ -59,7 +62,6 @@ export function KpiChart({
   const line = known.map((p, i) => `${i === 0 ? "M" : "L"}${x(i)},${y(p.value)}`).join(" ");
   const area = `${line} L${x(known.length - 1)},${PAD.top + plotH} L${x(0)},${PAD.top + plotH} Z`;
 
-  const last = known[known.length - 1];
   const active = hover !== null ? known[hover] : null;
 
   return (
@@ -114,16 +116,9 @@ export function KpiChart({
         ))}
 
         {/* Only the last point is labelled; a number on every point goes unread. */}
-        {hover === null ? (
-          <text
-            x={x(known.length - 1)}
-            y={Math.max(y(last.value) - 10, 12)}
-            textAnchor="end"
-            className="fill-ink text-[11px] font-bold"
-          >
-            {metric.format(last.value, currency)}
-          </text>
-        ) : null}
+        {/* No static value label: the card's headline already states the latest
+            figure, so repeating it on the endpoint is noise. Hovering any point
+            shows that month's value instead. */}
 
         {known.map((p, i) => (
           <text
