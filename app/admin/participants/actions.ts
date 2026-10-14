@@ -1,5 +1,7 @@
 "use server";
 
+import { normaliseUrl } from "@/lib/url";
+
 import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/lib/data";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -66,7 +68,7 @@ export async function updateParticipant(
       full_name: text(formData, "full_name"),
       email: text(formData, "email")?.toLowerCase(),
       company_name: text(formData, "company_name"),
-      company_website: text(formData, "company_website"),
+      company_website: normaliseUrl(text(formData, "company_website")),
       home_cohort_id: text(formData, "home_cohort_id"),
       role: formData.get("role") === "admin" ? "admin" : "participant",
       status: formData.get("status") === "alumni" ? "alumni" : "active",

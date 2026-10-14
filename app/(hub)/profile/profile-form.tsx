@@ -65,32 +65,32 @@ export default function ProfileForm({ participant }: { participant: Participant 
           <Field label="Company website">
             <Input
               name="company_website"
-              type="url"
-              placeholder="https://"
+              type="text"
+              placeholder="www.example.se"
               defaultValue={participant.company_website ?? ""}
             />
           </Field>
           <Field label="Instagram">
             <Input
               name="instagram_url"
-              type="url"
-              placeholder="https://"
+              type="text"
+              placeholder="www.example.se"
               defaultValue={participant.instagram_url ?? ""}
             />
           </Field>
           <Field label="TikTok">
             <Input
               name="tiktok_url"
-              type="url"
-              placeholder="https://"
+              type="text"
+              placeholder="www.example.se"
               defaultValue={participant.tiktok_url ?? ""}
             />
           </Field>
           <Field label="Facebook">
             <Input
               name="facebook_url"
-              type="url"
-              placeholder="https://"
+              type="text"
+              placeholder="www.example.se"
               defaultValue={participant.facebook_url ?? ""}
             />
           </Field>

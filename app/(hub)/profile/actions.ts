@@ -1,5 +1,7 @@
 "use server";
 
+import { normaliseUrl } from "@/lib/url";
+
 import { revalidatePath } from "next/cache";
 import { requireParticipant } from "@/lib/data";
 import { createClient } from "@/lib/supabase/server";
@@ -33,10 +35,19 @@ export async function saveProfile(
 ): Promise<ProfileState> {
   const participant = await requireParticipant();
 
+  // Anything that holds a link gets "https://" added if the person left it off.
+  const URL_FIELDS = new Set([
+    "company_website",
+    "instagram_url",
+    "tiktok_url",
+    "facebook_url",
+    "photo_url",
+  ]);
+
   const patch: Record<string, string | null> = {};
   for (const field of EDITABLE) {
     const value = String(formData.get(field) ?? "").trim();
-    patch[field] = value || null;
+    patch[field] = URL_FIELDS.has(field) ? normaliseUrl(value) : value || null;
   }
 
   if (!patch.full_name) {

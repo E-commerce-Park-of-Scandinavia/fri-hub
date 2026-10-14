@@ -1,5 +1,7 @@
 "use server";
 
+import { normaliseUrl } from "@/lib/url";
+
 import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/lib/data";
 import { createClient } from "@/lib/supabase/server";
@@ -18,7 +20,7 @@ function itemFields(formData: FormData) {
     session_id: text(formData, "session_id"),
     category: String(formData.get("category") ?? "general"),
     title: text(formData, "title"),
-    drive_url: text(formData, "drive_url"),
+    drive_url: normaliseUrl(text(formData, "drive_url")),
     item_date: text(formData, "item_date"),
   };
 }

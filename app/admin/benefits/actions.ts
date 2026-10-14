@@ -1,5 +1,7 @@
 "use server";
 
+import { normaliseUrl } from "@/lib/url";
+
 import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/lib/data";
 import { createClient } from "@/lib/supabase/server";
@@ -15,11 +17,12 @@ function partnerFields(formData: FormData) {
   return {
     cohort_id: text(formData, "cohort_id"),
     partner_name: text(formData, "partner_name"),
-    partner_url: text(formData, "partner_url"),
+    partner_url: normaliseUrl(text(formData, "partner_url")),
+    logo_url: normaliseUrl(text(formData, "logo_url")),
     title: text(formData, "title"),
     description: text(formData, "description"),
     discount_code: text(formData, "discount_code"),
-    redeem_url: text(formData, "redeem_url"),
+    redeem_url: normaliseUrl(text(formData, "redeem_url")),
     valid_from: text(formData, "valid_from"),
     valid_until: text(formData, "valid_until"),
     is_published: formData.get("is_published") === "on",

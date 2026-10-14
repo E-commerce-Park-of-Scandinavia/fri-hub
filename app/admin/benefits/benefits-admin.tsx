@@ -20,6 +20,7 @@ import {
   Select,
   Textarea,
 } from "@/components/ui";
+import { ImageUpload } from "@/components/image-upload";
 import type { Benefit, Cohort, Program } from "@/lib/types";
 
 const IDLE: AdminState = { status: "idle" };
@@ -63,6 +64,16 @@ function BenefitFields({
           />
         </Field>
       </div>
+
+      <ImageUpload
+        bucket="logos"
+        pathPrefix="benefits"
+        name="logo_url"
+        initialUrl={benefit?.logo_url ?? null}
+        label="Partner logo"
+        hint="Optional. PNG, JPEG, WebP or SVG, up to 2 MB."
+        accept={["image/png", "image/jpeg", "image/webp", "image/svg+xml"]}
+      />
 
       <Field label="The offer" hint="e.g. 20% off your first order">
         <Input name="title" required defaultValue={benefit?.title ?? ""} />
@@ -205,12 +216,20 @@ function Row({
   return (
     <details className="border-line border-t">
       <summary className="hover:bg-paper flex cursor-pointer flex-wrap items-center gap-3 px-4 py-3">
-        <span className="min-w-0 flex-1">
-          <span className="block text-sm font-semibold">{benefit.title}</span>
-          <span className="text-muted block text-xs">
-            {benefit.partner_name}
-            {ownerName ? ` · ${ownerName}` : ""}
+        {benefit.logo_url ? (
+          // eslint-disable-next-line @next/next/no-img-element -- storage URL
+          <img src={benefit.logo_url} alt="" className="h-8 w-8 shrink-0 object-contain" />
+        ) : (
+          <span className="bg-accent-soft text-accent flex h-8 w-8 shrink-0 items-center justify-center text-sm font-extrabold">
+            {benefit.partner_name.charAt(0)}
           </span>
+        )}
+        <span className="min-w-0 flex-1">
+          <span className="block text-base font-extrabold">
+            {benefit.partner_name}
+            {ownerName ? <span className="text-muted font-normal"> · {ownerName}</span> : null}
+          </span>
+          <span className="text-muted block text-sm">{benefit.title}</span>
         </span>
         {benefit.is_published ? null : <Badge>Hidden</Badge>}
         {benefit.cohort_id ? <Badge tone="accent">One cohort</Badge> : null}

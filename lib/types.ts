@@ -155,6 +155,7 @@ export type Benefit = {
   kind: BenefitKind;
   partner_name: string;
   partner_url: string | null;
+  logo_url: string | null;
   title: string;
   description: string | null;
   discount_code: string | null;

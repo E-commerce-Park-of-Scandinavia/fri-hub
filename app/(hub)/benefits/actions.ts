@@ -1,5 +1,7 @@
 "use server";
 
+import { normaliseUrl } from "@/lib/url";
+
 import { revalidatePath } from "next/cache";
 import { getCohort, requireParticipant } from "@/lib/data";
 import { createClient } from "@/lib/supabase/server";
@@ -44,11 +46,11 @@ export async function saveMyBenefit(
     offered_by_participant_id: participant.id,
     kind: "peer" as const,
     partner_name,
-    partner_url: text(formData, "partner_url"),
+    partner_url: normaliseUrl(text(formData, "partner_url")),
     title,
     description: text(formData, "description"),
     discount_code: text(formData, "discount_code"),
-    redeem_url: text(formData, "redeem_url"),
+    redeem_url: normaliseUrl(text(formData, "redeem_url")),
     valid_until: text(formData, "valid_until"),
     is_published: true,
   };

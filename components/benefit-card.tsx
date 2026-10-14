@@ -45,23 +45,37 @@ export function BenefitCard({
 }) {
   return (
     <Card className={expired ? "opacity-60" : undefined}>
-      <div className="flex flex-wrap items-start justify-between gap-2">
-        <div className="min-w-0">
-          <p className="text-accent text-xs font-bold tracking-widest uppercase">
-            {benefit.partner_url ? (
-              <a
-                href={benefit.partner_url}
-                target="_blank"
-                rel="noreferrer noopener"
-                className="underline"
-              >
-                {benefit.partner_name}
-              </a>
-            ) : (
-              benefit.partner_name
-            )}
-          </p>
-          <h3 className="mt-1 text-lg font-extrabold">{benefit.title}</h3>
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div className="flex min-w-0 items-center gap-3">
+          {benefit.logo_url ? (
+            // eslint-disable-next-line @next/next/no-img-element -- storage URL
+            <img
+              src={benefit.logo_url}
+              alt=""
+              className="h-12 w-12 shrink-0 object-contain"
+            />
+          ) : (
+            <div className="bg-accent-soft text-accent flex h-12 w-12 shrink-0 items-center justify-center text-xl font-extrabold">
+              {benefit.partner_name.charAt(0)}
+            </div>
+          )}
+          <div className="min-w-0">
+            <h3 className="text-xl leading-tight">
+              {benefit.partner_url ? (
+                <a
+                  href={benefit.partner_url}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="hover:text-accent"
+                >
+                  {benefit.partner_name}
+                </a>
+              ) : (
+                benefit.partner_name
+              )}
+            </h3>
+            <p className="text-accent mt-0.5 text-base font-semibold">{benefit.title}</p>
+          </div>
         </div>
         {expired ? (
           <Badge>Expired</Badge>

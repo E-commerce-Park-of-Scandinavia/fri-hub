@@ -1,5 +1,7 @@
 "use server";
 
+import { normaliseUrl } from "@/lib/url";
+
 import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/lib/data";
 import { createClient } from "@/lib/supabase/server";
@@ -18,7 +20,7 @@ function cohortFields(formData: FormData) {
     start_date: text(formData, "start_date"),
     expected_end_date: text(formData, "expected_end_date"),
     status: String(formData.get("status") ?? "active"),
-    slack_channel_url: text(formData, "slack_channel_url"),
+    slack_channel_url: normaliseUrl(text(formData, "slack_channel_url")),
   };
 }
 
@@ -81,7 +83,7 @@ export async function createProgram(
     name,
     slug,
     description: text(formData, "description"),
-    slack_invite_url: text(formData, "slack_invite_url"),
+    slack_invite_url: normaliseUrl(text(formData, "slack_invite_url")),
   });
 
   if (error) return { status: "error", message: error.message };
@@ -103,7 +105,7 @@ export async function updateProgram(
       name: text(formData, "name"),
       slug: text(formData, "slug"),
       description: text(formData, "description"),
-      slack_invite_url: text(formData, "slack_invite_url"),
+      slack_invite_url: normaliseUrl(text(formData, "slack_invite_url")),
     })
     .eq("id", String(formData.get("id") ?? ""));
 
