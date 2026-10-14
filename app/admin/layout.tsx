@@ -7,6 +7,7 @@ const ADMIN_ITEMS: NavItem[] = [
   { href: "/admin/sessions", label: "Sessions" },
   { href: "/admin/knowledge-hub", label: "Knowledge Hub" },
   { href: "/admin/benefits", label: "Benefits" },
+  { href: "/admin/community", label: "Community" },
   { href: "/admin/cohorts", label: "Cohorts" },
   { href: "/admin/programs", label: "Programmes" },
   { href: "/admin/checkins", label: "Check-ins" },
