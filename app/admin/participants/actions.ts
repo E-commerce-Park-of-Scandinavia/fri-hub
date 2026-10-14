@@ -67,6 +67,7 @@ export async function updateParticipant(
     .update({
       full_name: text(formData, "full_name"),
       email: text(formData, "email")?.toLowerCase(),
+      phone: text(formData, "phone"),
       company_name: text(formData, "company_name"),
       company_website: normaliseUrl(text(formData, "company_website")),
       home_cohort_id: text(formData, "home_cohort_id"),

@@ -92,13 +92,18 @@ export function ParticipantProfile({
           {person.company_name ? (
             <p className="text-muted mt-0.5 text-base">{person.company_name}</p>
           ) : null}
-          <p className="mt-2">
-            <a
-              href={`mailto:${person.email}`}
-              className="text-accent text-sm font-semibold underline"
-            >
+          <p className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm font-semibold">
+            <a href={`mailto:${person.email}`} className="text-accent underline">
               {person.email}
             </a>
+            {person.phone ? (
+              <a
+                href={`tel:${person.phone.replace(/\s+/g, "")}`}
+                className="text-accent underline"
+              >
+                {person.phone}
+              </a>
+            ) : null}
           </p>
           {person.status === "alumni" ? (
             <p className="mt-2">

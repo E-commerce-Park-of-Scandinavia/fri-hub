@@ -129,6 +129,9 @@ function EditRow({
             <Field label="Email">
               <Input name="email" type="email" defaultValue={person.email} required />
             </Field>
+            <Field label="Phone">
+              <Input name="phone" type="tel" defaultValue={person.phone ?? ""} />
+            </Field>
             <Field label="Company">
               <Input name="company_name" defaultValue={person.company_name ?? ""} />
             </Field>

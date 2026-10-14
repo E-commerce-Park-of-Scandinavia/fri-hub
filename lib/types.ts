@@ -67,6 +67,7 @@ export type Participant = {
   auth_user_id: string | null;
   full_name: string;
   email: string;
+  phone: string | null;
   company_name: string | null;
   company_website: string | null;
   instagram_url: string | null;

@@ -15,6 +15,7 @@ export type ProfileState = { status: "idle" | "saved" | "error"; message?: strin
  */
 const EDITABLE = [
   "full_name",
+  "phone",
   "company_name",
   "company_website",
   "instagram_url",

@@ -24,15 +24,20 @@ export default async function DirectoryPage() {
       {people.length === 0 ? (
         <EmptyState>No one else has been added to your cohort yet.</EmptyState>
       ) : (
-        <ul className="border-line bg-surface divide-line grid divide-y border sm:grid-cols-2 sm:divide-y-0">
+        <ul className="border-line bg-surface divide-line divide-y border">
           {people.map((person) => (
-            <li key={person.id} className="border-line sm:border-b">
+            <li
+              key={person.id}
+              className="hover:bg-paper flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3"
+            >
+              {/* The row links to the profile; the contact links must sit
+                  outside it, since an anchor cannot contain another anchor. */}
               <Link
                 href={`/directory/${person.id}`}
-                className="hover:bg-paper group flex items-center gap-4 px-4 py-3"
+                className="group flex min-w-0 flex-1 items-center gap-4"
               >
                 <Avatar person={person} size={44} />
-                <span className="min-w-0 flex-1">
+                <span className="min-w-0">
                   <span className="group-hover:text-accent block text-sm font-bold">
                     {person.full_name}
                     {person.id === me.id ? (
@@ -43,10 +48,21 @@ export default async function DirectoryPage() {
                     {person.company_name ?? "—"}
                   </span>
                 </span>
-                <span className="text-muted group-hover:text-accent text-lg" aria-hidden>
-                  →
-                </span>
               </Link>
+
+              <span className="flex min-w-0 flex-col items-start gap-0.5 text-sm sm:items-end">
+                <a
+                  href={`mailto:${person.email}`}
+                  className="text-accent max-w-full truncate underline"
+                >
+                  {person.email}
+                </a>
+                {person.phone ? (
+                  <a href={`tel:${person.phone.replace(/\s+/g, "")}`} className="text-muted">
+                    {person.phone}
+                  </a>
+                ) : null}
+              </span>
             </li>
           ))}
         </ul>

@@ -59,6 +59,14 @@ export default function ProfileForm({ participant }: { participant: Participant 
           <Field label="Full name">
             <Input name="full_name" defaultValue={participant.full_name} required />
           </Field>
+          <Field label="Phone number" hint="Shown to your own cohort only.">
+            <Input
+              name="phone"
+              type="tel"
+              placeholder="+46 70 123 45 67"
+              defaultValue={participant.phone ?? ""}
+            />
+          </Field>
           <Field label="Company name">
             <Input name="company_name" defaultValue={participant.company_name ?? ""} />
           </Field>
