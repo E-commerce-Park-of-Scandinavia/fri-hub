@@ -1,8 +1,9 @@
 "use server";
 
-import { normaliseUrl } from "@/lib/url";
+import { normaliseUrl, siteUrl } from "@/lib/url";
 
 import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
 import { requireAdmin } from "@/lib/data";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
@@ -114,7 +115,7 @@ export async function sendInvite(
   const email = String(formData.get("email") ?? "").trim().toLowerCase();
   if (!email) return { status: "error", message: "No email address on that row." };
 
-  const site = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const site = siteUrl((await headers()).get("origin"));
 
   try {
     const admin = createAdminClient();

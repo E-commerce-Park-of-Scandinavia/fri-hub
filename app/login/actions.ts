@@ -2,6 +2,7 @@
 
 import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
+import { siteUrl } from "@/lib/url";
 
 export type LoginState = { status: "idle" | "sent" | "error"; message?: string };
 
@@ -19,10 +20,7 @@ export async function sendMagicLink(
   }
 
   const supabase = await createClient();
-  const origin =
-    process.env.NEXT_PUBLIC_SITE_URL ??
-    (await headers()).get("origin") ??
-    "http://localhost:3000";
+  const origin = siteUrl((await headers()).get("origin"));
 
   const { error } = await supabase.auth.signInWithOtp({
     email,

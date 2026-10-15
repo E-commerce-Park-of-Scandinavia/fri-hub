@@ -20,3 +20,21 @@ export function normaliseUrl(raw: string | null | undefined): string | null {
     return null;
   }
 }
+
+/**
+ * Where this instance lives, for links that have to be absolute (magic links,
+ * invite emails). Prefers an explicit setting, then the production domain Vercel
+ * injects by itself, then the origin of the request being handled — so a fresh
+ * deploy sends correct links before anyone has configured anything.
+ */
+export function siteUrl(requestOrigin?: string | null): string {
+  const explicit = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  if (explicit) return explicit.replace(/\/+$/, "");
+
+  const vercel = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim();
+  if (vercel) return `https://${vercel}`;
+
+  if (requestOrigin) return requestOrigin.replace(/\/+$/, "");
+
+  return "http://localhost:3000";
+}
